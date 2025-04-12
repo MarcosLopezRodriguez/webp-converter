@@ -1,8 +1,91 @@
+/* Estilos generales */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f9fafb;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+/* Encabezado */
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4f46e5;
+  margin-bottom: 1rem;
+}
+
+/* Botones */
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #3b3ab3;
+}
+
+/* Inputs */
+input[type="file"] {
+  padding: 0.5rem;
+  border: 2px dashed #4f46e5;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+input[type="file"]:hover {
+  border-color: #3b3ab3;
+}
+
+/* Contenedor de imágenes */
+.image-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.image-card {
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-card img {
+  max-height: 200px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.image-card p {
+  font-size: 0.875rem;
+  color: #555;
+  word-wrap: break-word;
+}
+
+/* Mensajes */
+.message {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-top: 1rem;
 }
 
 .logo {
