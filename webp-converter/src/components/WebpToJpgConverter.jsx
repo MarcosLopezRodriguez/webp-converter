@@ -4,10 +4,15 @@ import saveAs from "file-saver";
 
 export default function WebpToJpgConverter() {
     const [jpgUrls, setJpgUrls] = useState([]);
-    const [outputFormat, setOutputFormat] = useState("jpeg"); // Nuevo estado para el formato de salida
+    const [outputFormat, setOutputFormat] = useState("jpeg");
+    const [isDragging, setIsDragging] = useState(false);
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
+        processFiles(files);
+    };
+
+    const processFiles = (files) => {
         const validFiles = files.filter((file) => file.type === "image/webp");
 
         if (validFiles.length === 0) {
@@ -16,6 +21,22 @@ export default function WebpToJpgConverter() {
         }
 
         validFiles.forEach((file) => convertToFormat(file));
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const files = Array.from(e.dataTransfer.files);
+        processFiles(files);
     };
 
     const convertToFormat = (file) => {
@@ -64,7 +85,23 @@ export default function WebpToJpgConverter() {
     };
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem", padding: "1.5rem", maxWidth: "960px", margin: "0 auto" }}>
+        <div
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "1.5rem",
+                padding: "1.5rem",
+                maxWidth: "960px",
+                margin: "0 auto",
+                border: isDragging ? "2px dashed #4f46e5" : "2px solid transparent",
+                borderRadius: "0.5rem",
+                backgroundColor: isDragging ? "#f0f4ff" : "white",
+            }}
+        >
             <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Conversor WEBP a Otros Formatos</h1>
 
             <select value={outputFormat} onChange={(e) => setOutputFormat(e.target.value)} style={{ padding: "0.5rem", borderRadius: "0.5rem" }}>
@@ -80,6 +117,8 @@ export default function WebpToJpgConverter() {
                 onChange={handleFileChange}
                 style={{ maxWidth: "400px", width: "100%" }}
             />
+
+            <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>O arrastra y suelta tus archivos aquí</p>
 
             {jpgUrls.length > 0 && (
                 <button onClick={handleDownloadAllZip} style={{ padding: "0.5rem 1rem", backgroundColor: "#4f46e5", color: "white", borderRadius: "0.5rem", marginTop: "1rem" }}>
