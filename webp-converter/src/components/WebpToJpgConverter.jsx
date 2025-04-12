@@ -85,6 +85,14 @@ export default function WebpToJpgConverter() {
         saveAs(zipBlob, `imagenes_convertidas_${outputFormat}.zip`);
     };
 
+    const clearImages = () => {
+        setJpgUrls([]);
+    };
+
+    const removeImage = (index) => {
+        setJpgUrls((prev) => prev.filter((_, i) => i !== index));
+    };
+
     return (
         <div
             onDragOver={handleDragOver}
@@ -122,9 +130,14 @@ export default function WebpToJpgConverter() {
             <p style={{ fontSize: "0.875rem", color: "#6b7280" }}>O arrastra y suelta tus archivos aquí</p>
 
             {jpgUrls.length > 0 && (
-                <button onClick={handleDownloadAllZip} style={{ padding: "0.5rem 1rem", backgroundColor: "#4f46e5", color: "white", borderRadius: "0.5rem", marginTop: "1rem" }}>
-                    Descargar todo en ZIP
-                </button>
+                <>
+                    <button onClick={handleDownloadAllZip} style={{ padding: "0.5rem 1rem", backgroundColor: "#4f46e5", color: "white", borderRadius: "0.5rem", marginTop: "1rem" }}>
+                        Descargar todo en ZIP
+                    </button>
+                    <button onClick={clearImages} style={{ padding: "0.5rem 1rem", backgroundColor: "#e53e3e", color: "white", borderRadius: "0.5rem", marginTop: "1rem" }}>
+                        Limpiar lista
+                    </button>
+                </>
             )}
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "1rem", width: "100%", marginTop: "1.5rem" }}>
@@ -134,6 +147,9 @@ export default function WebpToJpgConverter() {
                         <p style={{ fontSize: "0.875rem", wordWrap: "break-word" }}>{jpg.name}</p>
                         <button onClick={() => handleDownload(jpg)} style={{ marginTop: "0.5rem", padding: "0.25rem 0.75rem", backgroundColor: "#10b981", color: "white", borderRadius: "0.375rem" }}>
                             Descargar
+                        </button>
+                        <button onClick={() => removeImage(idx)} style={{ marginTop: "0.5rem", padding: "0.25rem 0.75rem", backgroundColor: "#e53e3e", color: "white", borderRadius: "0.375rem" }}>
+                            Eliminar
                         </button>
                     </div>
                 ))}

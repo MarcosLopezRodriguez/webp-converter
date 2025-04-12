@@ -1,17 +1,25 @@
 /* Estilos generales */
 body {
+  background-color: #e0f7fa;
+  /* Nuevo color de fondo */
   font-family: 'Arial', sans-serif;
-  background-color: #f9fafb;
   color: #333;
   margin: 0;
   padding: 0;
 }
 
+/* Ajustar el contenedor principal y centrar los elementos */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
   padding: 2rem;
-  text-align: center;
+  box-sizing: border-box;
+  background-color: #f9fafb;
 }
 
 /* Encabezado */
