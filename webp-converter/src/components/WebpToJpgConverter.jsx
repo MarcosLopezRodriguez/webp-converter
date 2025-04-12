@@ -1,17 +1,30 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import JSZip from "jszip";
 import saveAs from "file-saver";
 
+/**
+ * WebpToJpgConverter Component
+ * Handles the conversion of WebP images to other formats (JPG, PNG, BMP).
+ * Provides drag-and-drop functionality and file input for uploading images.
+ */
 export default function WebpToJpgConverter() {
     const [jpgUrls, setJpgUrls] = useState([]);
     const [outputFormat, setOutputFormat] = useState("jpeg");
     const [isDragging, setIsDragging] = useState(false);
 
+    /**
+     * Handles file input change event.
+     * @param {Event} e - The file input change event.
+     */
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
         processFiles(files);
     };
 
+    /**
+     * Processes the uploaded files and filters valid WebP images.
+     * @param {File[]} files - Array of uploaded files.
+     */
     const processFiles = (files) => {
         const validFiles = files.filter((file) => file.type === "image/webp");
 
@@ -23,22 +36,10 @@ export default function WebpToJpgConverter() {
         validFiles.forEach((file) => convertToFormat(file));
     };
 
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        setIsDragging(true);
-    };
-
-    const handleDragLeave = () => {
-        setIsDragging(false);
-    };
-
-    const handleDrop = (e) => {
-        e.preventDefault();
-        setIsDragging(false);
-        const files = Array.from(e.dataTransfer.files);
-        processFiles(files);
-    };
-
+    /**
+     * Converts a WebP image to the selected output format.
+     * @param {File} file - The WebP image file to convert.
+     */
     const convertToFormat = (file) => {
         const img = new Image();
         const reader = new FileReader();
@@ -60,17 +61,55 @@ export default function WebpToJpgConverter() {
         reader.readAsDataURL(file);
     };
 
-    const handleDownload = (jpg) => {
-        const a = document.createElement("a");
-        a.href = jpg.url;
-        a.download = jpg.name;
-        a.click();
+    /**
+     * Clears the list of converted images.
+     */
+    const clearImages = () => {
+        setJpgUrls([]);
     };
 
+    /**
+     * Removes a specific image from the list.
+     * @param {number} index - The index of the image to remove.
+     */
+    const removeImage = (index) => {
+        setJpgUrls((prev) => prev.filter((_, i) => i !== index));
+    };
+
+    /**
+     * Handles the drag-over event for drag-and-drop functionality.
+     * @param {Event} e - The drag-over event.
+     */
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    /**
+     * Handles the drag-leave event for drag-and-drop functionality.
+     */
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    /**
+     * Handles the drop event for drag-and-drop functionality.
+     * @param {Event} e - The drop event.
+     */
+    const handleDrop = (e) => {
+        e.preventDefault();
+        setIsDragging(false);
+        const files = Array.from(e.dataTransfer.files);
+        processFiles(files);
+    };
+
+    /**
+     * Downloads all converted images as a ZIP file.
+     */
     const handleDownloadAllZip = async () => {
         if (jpgUrls.length === 0) return;
         const zip = new JSZip();
-        const folderName = `${outputFormat}s`; // Cambiar el nombre de la carpeta según el formato
+        const folderName = `${outputFormat}s`;
         const folder = zip.folder(folderName);
 
         const blobPromises = jpgUrls.map(async (jpg) => {
@@ -85,14 +124,6 @@ export default function WebpToJpgConverter() {
         saveAs(zipBlob, `imagenes_convertidas_${outputFormat}.zip`);
     };
 
-    const clearImages = () => {
-        setJpgUrls([]);
-    };
-
-    const removeImage = (index) => {
-        setJpgUrls((prev) => prev.filter((_, i) => i !== index));
-    };
-
     return (
         <div
             onDragOver={handleDragOver}
@@ -104,7 +135,7 @@ export default function WebpToJpgConverter() {
                 alignItems: "center",
                 gap: "1.5rem",
                 padding: "1.5rem",
-                maxWidth: "100%", // Ajustar al ancho del navegador
+                maxWidth: "100%",
                 margin: "0 auto",
                 border: isDragging ? "2px dashed #4f46e5" : "2px solid transparent",
                 borderRadius: "0.5rem",
