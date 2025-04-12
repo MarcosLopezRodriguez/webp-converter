@@ -70,7 +70,8 @@ export default function WebpToJpgConverter() {
     const handleDownloadAllZip = async () => {
         if (jpgUrls.length === 0) return;
         const zip = new JSZip();
-        const folder = zip.folder("jpgs");
+        const folderName = `${outputFormat}s`; // Cambiar el nombre de la carpeta según el formato
+        const folder = zip.folder(folderName);
 
         const blobPromises = jpgUrls.map(async (jpg) => {
             const response = await fetch(jpg.url);
@@ -81,7 +82,7 @@ export default function WebpToJpgConverter() {
         await Promise.all(blobPromises);
 
         const zipBlob = await zip.generateAsync({ type: "blob" });
-        saveAs(zipBlob, "imagenes_convertidas.zip");
+        saveAs(zipBlob, `imagenes_convertidas_${outputFormat}.zip`);
     };
 
     return (
@@ -95,7 +96,7 @@ export default function WebpToJpgConverter() {
                 alignItems: "center",
                 gap: "1.5rem",
                 padding: "1.5rem",
-                maxWidth: "960px",
+                maxWidth: "100%", // Ajustar al ancho del navegador
                 margin: "0 auto",
                 border: isDragging ? "2px dashed #4f46e5" : "2px solid transparent",
                 borderRadius: "0.5rem",
