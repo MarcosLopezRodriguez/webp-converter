@@ -4,6 +4,7 @@ import saveAs from "file-saver";
 
 export default function WebpToJpgConverter() {
     const [jpgUrls, setJpgUrls] = useState([]);
+    const [outputFormat, setOutputFormat] = useState("jpeg"); // Nuevo estado para el formato de salida
 
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
@@ -14,10 +15,10 @@ export default function WebpToJpgConverter() {
             return;
         }
 
-        validFiles.forEach((file) => convertToJpg(file));
+        validFiles.forEach((file) => convertToFormat(file));
     };
 
-    const convertToJpg = (file) => {
+    const convertToFormat = (file) => {
         const img = new Image();
         const reader = new FileReader();
 
@@ -31,8 +32,8 @@ export default function WebpToJpgConverter() {
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
             ctx.drawImage(img, 0, 0);
-            const jpgDataUrl = canvas.toDataURL("image/jpeg", 1.0);
-            setJpgUrls((prev) => [...prev, { name: file.name.replace(/\.webp$/i, ".jpg"), url: jpgDataUrl }]);
+            const dataUrl = canvas.toDataURL(`image/${outputFormat}`, 1.0);
+            setJpgUrls((prev) => [...prev, { name: file.name.replace(/\.webp$/i, `.${outputFormat}`), url: dataUrl }]);
         };
 
         reader.readAsDataURL(file);
@@ -64,7 +65,14 @@ export default function WebpToJpgConverter() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1.5rem", padding: "1.5rem", maxWidth: "960px", margin: "0 auto" }}>
-            <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Conversor WEBP a JPG</h1>
+            <h1 style={{ fontSize: "1.5rem", fontWeight: "bold" }}>Conversor WEBP a Otros Formatos</h1>
+
+            <select value={outputFormat} onChange={(e) => setOutputFormat(e.target.value)} style={{ padding: "0.5rem", borderRadius: "0.5rem" }}>
+                <option value="jpeg">JPG</option>
+                <option value="png">PNG</option>
+                <option value="bmp">BMP</option>
+            </select>
+
             <input
                 type="file"
                 accept="image/webp"
