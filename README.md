@@ -44,5 +44,10 @@ Los archivos generados estarán en el directorio `dist`.
 ## Contribuciones
 ¡Las contribuciones son bienvenidas! Si deseas contribuir, por favor abre un issue o envía un pull request.
 
-## Licencia
+## ❤️ Apoyo al desarrollo
+
+Si esta aplicación te ha ayudado, considera apoyar al desarrollo de esta y otras aplicaciones: 
+https://ko-fi.com/markonichan
+
+## 📜 Licencia
 Este proyecto está bajo la licencia MIT.
